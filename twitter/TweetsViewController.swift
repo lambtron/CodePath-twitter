@@ -1,3 +1,4 @@
+
 //
 //  TweetsViewController.swift
 //  twitter
@@ -10,18 +11,31 @@ import UIKit
 
 class TweetsViewController: UIViewController {
 
+    var tweets: [Tweet]!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        TwitterClient.sharedInstance.homeTimeline(success: {(tweets: [Tweet]) -> () in
+            self.tweets = tweets
+            for tweet in tweets {
+                print(tweet)
+            }
+        }, failure: {(error: Error) -> () in
+            print(error.localizedDescription)
+        })
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
+    @IBAction func onLogoutButton(_ sender: AnyObject) {
+        TwitterClient.sharedInstance.logout()
+    }
+    
     /*
     // MARK: - Navigation
 
